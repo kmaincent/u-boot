@@ -882,6 +882,7 @@ static iomux_v3_cfg_t const usb_otg_pads[] = {
 
 static iomux_v3_cfg_t const usb_hc1_pads[] = {
 	MX6_PAD_ENET_TXD1__GPIO1_IO29 | MUX_PAD_CTRL(NO_PAD_CTRL),
+	MX6_PAD_NANDF_RB0__GPIO6_IO10 | MUX_PAD_CTRL(NO_PAD_CTRL),
 };
 
 static void setup_usb(void)
@@ -897,6 +898,8 @@ static void setup_usb(void)
 
 	imx_iomux_v3_setup_multiple_pads(usb_hc1_pads,
 					 ARRAY_SIZE(usb_hc1_pads));
+	gpio_direction_output(IMX_GPIO_NR(6, 10), 1);
+	gpio_set_value(IMX_GPIO_NR(6, 10), 1);
 }
 
 int board_ehci_hcd_init(int port)
