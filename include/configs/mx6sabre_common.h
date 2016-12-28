@@ -264,9 +264,9 @@
 
 #define CONFIG_SUPPORT_USB_BOOT \
 	"usb reset;" \
-	"if fatload usb 0 ${loadaddr} fa3fu/files/zImage-imx6dlsabresd.bin && " \
-		"fatload usb 0 ${fdt_addr} fa3fu/files/zImage-imx6dl-sabresd.dtb && " \
-		"fatload usb 0 ${initrd_addr} fa3fu/firmware/rootfs.cpio.uboot; then " \
+	"if fatload usb 0 ${loadaddr} 'profiles/linux/os firmware/files/zimage-imx6dlsabresd.bin' && " \
+		"fatload usb 0 ${fdt_addr} 'profiles/linux/os firmware/files/zimage-imx6dl-sabresd.dtb' && " \
+		"fatload usb 0 ${initrd_addr} 'fa3fu/rootfs.cpio.uboot'; then " \
 			"setenv usbargs setenv bootargs console=${console},${baudrate} noinitrd; " \
 			"bootz ${loadaddr} ${initrd_addr} ${fdt_addr}; " \
 	"fi;"
