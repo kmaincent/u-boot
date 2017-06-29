@@ -19,8 +19,8 @@
 #endif
 
 #define CONFIG_MACH_TYPE	3980
-#define CONFIG_MXC_UART_BASE	UART2_BASE
-#define CONFIG_CONSOLE_DEV		"ttymxc1"
+#define CONFIG_MXC_UART_BASE	UART1_BASE
+#define CONFIG_CONSOLE_DEV		"ttymxc0"
 #define CONFIG_MMCROOT			"/dev/mmcblk2p2"  /* SDHC3 */
 #if defined(CONFIG_MX6QP)
 #define CONFIG_DEFAULT_FDT_FILE	"imx6qp-sabresd.dtb"
@@ -36,7 +36,7 @@
 #define PHYS_SDRAM_SIZE		(512u * 1024 * 1024)
 #endif
 
-#include "mx6sabre_common_console1.h"
+#include "mx6sabre_common_ttymxc0.h"
 
 #define CONFIG_SYS_FSL_USDHC_NUM	3
 #define CONFIG_SYS_MMC_ENV_DEV		1	/* SDHC3 */

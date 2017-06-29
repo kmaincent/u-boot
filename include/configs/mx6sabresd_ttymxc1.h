@@ -36,7 +36,7 @@
 #define PHYS_SDRAM_SIZE		(512u * 1024 * 1024)
 #endif
 
-#include "mx6sabre_common_console1.h"
+#include "mx6sabre_common_ttymxc1.h"
 
 #define CONFIG_SYS_FSL_USDHC_NUM	3
 #define CONFIG_SYS_MMC_ENV_DEV		1	/* SDHC3 */
