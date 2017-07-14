@@ -950,6 +950,8 @@ int board_ehci_power(int port, int on)
 int board_early_init_f(void)
 {
 	setup_iomux_uart();
+	gpio_direction_output(IMX_GPIO_NR(1, 2), 0);
+	gpio_set_value(IMX_GPIO_NR(1, 2), 0);
 #if defined(CONFIG_VIDEO_IPUV3)
 	setup_display();
 #endif

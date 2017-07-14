@@ -19,7 +19,7 @@
 /* #define CONFIG_USE_PLUGIN */
 
 /* uncomment for SECURE mode support */
-/* #define CONFIG_SECURE_BOOT */
+#define CONFIG_SECURE_BOOT
 
 #ifdef CONFIG_SECURE_BOOT
 #ifndef CONFIG_CSF_SIZE
@@ -90,7 +90,7 @@
 
 /* allow to overwrite serial and ethaddr */
 #define CONFIG_ENV_OVERWRITE
-#define CONFIG_CONS_INDEX              2	//1:ttymxc0 2:ttymxc1
+#define CONFIG_CONS_INDEX			2	/* 1:ttymxc0 2:ttymxc1 */
 #define CONFIG_BAUDRATE                        115200
 
 /* Command definition */
