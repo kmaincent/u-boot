@@ -35,6 +35,7 @@
 /System.map
 /u-boot*
 /boards.cfg
+/mx6qsabresd_config
 
 #
 # git files that we don't want to ignore even it they are dot-files

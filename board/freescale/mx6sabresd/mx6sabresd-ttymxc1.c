@@ -95,8 +95,9 @@ int dram_init(void)
 }
 
 static iomux_v3_cfg_t const uart1_pads[] = {
-	MX6_PAD_EIM_D26__UART2_TX_DATA | MUX_PAD_CTRL(UART_PAD_CTRL),
-	MX6_PAD_EIM_D27__UART2_RX_DATA | MUX_PAD_CTRL(UART_PAD_CTRL),
+	MX6_PAD_EIM_D26__UART2_TX_DATA	| MUX_PAD_CTRL(UART_PAD_CTRL),
+	MX6_PAD_EIM_D27__UART2_RX_DATA	| MUX_PAD_CTRL(UART_PAD_CTRL),
+	MX6_PAD_EIM_A25__GPIO5_IO02		| MUX_PAD_CTRL(NO_PAD_CTRL),
 };/*ttymxc1*/
 
 static iomux_v3_cfg_t const enet_pads[] = {
@@ -308,6 +309,8 @@ static iomux_v3_cfg_t const epdc_disable_pads[] = {
 static void setup_iomux_uart(void)
 {
 	imx_iomux_v3_setup_multiple_pads(uart1_pads, ARRAY_SIZE(uart1_pads));
+	gpio_direction_output(IMX_GPIO_NR(5, 2), 1);
+	gpio_set_value(IMX_GPIO_NR(5, 2), 1);
 }
 
 #ifdef CONFIG_FSL_ESDHC
@@ -894,6 +897,8 @@ static iomux_v3_cfg_t const usb_hc1_pads[] = {
 	MX6_PAD_ENET_TXD1__GPIO1_IO29 | MUX_PAD_CTRL(NO_PAD_CTRL),
 	MX6_PAD_NANDF_RB0__GPIO6_IO10 | MUX_PAD_CTRL(NO_PAD_CTRL),
 	MX6_PAD_KEY_ROW2__GPIO4_IO11 | MUX_PAD_CTRL(NO_PAD_CTRL),
+	MX6_PAD_EIM_D28__GPIO3_IO28 | MUX_PAD_CTRL(NO_PAD_CTRL),	/* USBP0_EN */
+	MX6_PAD_NANDF_D3__GPIO2_IO03 | MUX_PAD_CTRL(NO_PAD_CTRL),	/* USBP1_EN (FA30A is ADJ+)*/
 };
 
 static void setup_usb(void)
@@ -913,6 +918,10 @@ static void setup_usb(void)
 	gpio_set_value(IMX_GPIO_NR(6, 10), 1);
 	gpio_direction_output(IMX_GPIO_NR(4, 11), 1);
 	gpio_set_value(IMX_GPIO_NR(4, 11), 1);
+	gpio_direction_output(IMX_GPIO_NR(3, 28), 1);
+	gpio_set_value(IMX_GPIO_NR(3, 28), 1);
+	gpio_direction_output(IMX_GPIO_NR(2, 3), 1);
+	gpio_set_value(IMX_GPIO_NR(2, 3), 1);
 }
 
 int board_ehci_hcd_init(int port)
