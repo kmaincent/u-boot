@@ -21,6 +21,11 @@
 #define CONFIG_MACH_TYPE	3980
 #define CONFIG_MXC_UART_BASE	UART2_BASE
 #define CONFIG_CONSOLE_DEV		"ttymxc1"
+#define CONFIG_CON_PORT			2 /* 1:ttymxc0 2:ttymxc1 */
+
+#define CONFIG_FB_DEV         "video=mxcfb0:dev=ldb,bpp=32 video=mxcfb1:dev=hdmi,1920x1080M@60,bpp=32 video=mxcfb2:off"	
+
+
 #define CONFIG_MMCROOT			"/dev/mmcblk2p2"  /* SDHC3 */
 #if defined(CONFIG_MX6QP)
 #define CONFIG_DEFAULT_FDT_FILE	"imx6qp-sabresd.dtb"

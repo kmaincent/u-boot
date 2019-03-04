@@ -90,8 +90,8 @@
 
 /* allow to overwrite serial and ethaddr */
 #define CONFIG_ENV_OVERWRITE
-#define CONFIG_CONS_INDEX			1	/* 1:ttymxc0 2:ttymxc1 */
-#define CONFIG_BAUDRATE                        115200
+#define CONFIG_CONS_INDEX		CONFIG_CON_PORT	/* 1:ttymxc0 2:ttymxc1 */
+#define CONFIG_BAUDRATE         115200
 
 /* Command definition */
 #include <config_cmd_default.h>
@@ -103,7 +103,7 @@
 
 #define CONFIG_BOOTDELAY               1
 
-#define CONFIG_LOADADDR                        0x12000000
+#define CONFIG_LOADADDR                0x12000000
 #define CONFIG_SYS_TEXT_BASE           0x17800000
 #define CONFIG_SYS_MMC_IMG_LOAD_PART	1
 
@@ -269,6 +269,7 @@
 			"fatload usb 0 ${fdt_addr} 'profiles/linux/os firmware/files/zimage-imx6q-sabresd.dtb' && " \
 			"fatload usb 0 ${initrd_addr} 'fa3fu/rootfs.cpio.uboot'; then " \
 				"setenv usbargs setenv bootargs console=${console},${baudrate} noinitrd; " \
+			 	"setenv bootargs console=${console},${baudrate} " CONFIG_FB_DEV " consoleblank=0 noinitrd;"\
 				"bootz ${loadaddr} ${initrd_addr} ${fdt_addr}; " \
 		"fi;" \
 	"else " \
@@ -276,6 +277,7 @@
 			"fatload usb 0 ${fdt_addr} 'profiles/linux/os firmware/files/zimage-imx6dl-sabresd.dtb' && " \
 			"fatload usb 0 ${initrd_addr} 'fa3fu/rootfs.cpio.uboot'; then " \
 				"setenv usbargs setenv bootargs console=${console},${baudrate} noinitrd; " \
+				"setenv bootargs console=${console},${baudrate} " CONFIG_FB_DEV " consoleblank=0 noinitrd;"\
 				"bootz ${loadaddr} ${initrd_addr} ${fdt_addr}; " \
 		"fi;" \
 	"fi;"
