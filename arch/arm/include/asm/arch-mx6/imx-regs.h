@@ -390,7 +390,7 @@
 #if (!(defined(CONFIG_MX6SX) || defined(CONFIG_MX6UL)))
 #define IRAM_SIZE                    0x00040000
 #else
-#define IRAM_SIZE                    0x00020000
+#define IRAM_SIZE                    0x00020000	/* 0x00010000 for 1G; 0x00020000 for 2G */
 #endif
 #define FEC_QUIRK_ENET_MAC
 #define SNVS_LPGPR                   0x68

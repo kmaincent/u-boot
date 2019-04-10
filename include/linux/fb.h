@@ -80,6 +80,13 @@ struct fb_bitfield {
 					/* vtotal = 121d/242n/484i => NTSC */
 #define FB_SYNC_ON_GREEN	32	/* sync on green */
 
+#define FB_SYNC_OE_LOW_ACT      0x80000000
+#define FB_SYNC_CLK_LAT_FALL    0x40000000
+#define FB_SYNC_DATA_INVERT     0x20000000
+#define FB_SYNC_CLK_IDLE_EN     0x10000000
+#define FB_SYNC_SHARP_MODE      0x08000000
+#define FB_SYNC_SWAP_RGB        0x04000000
+
 #define FB_VMODE_NONINTERLACED	0	/* non interlaced */
 #define FB_VMODE_INTERLACED	1	/* interlaced	*/
 #define FB_VMODE_DOUBLE		2	/* double scan */
