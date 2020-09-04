@@ -1,0 +1,70 @@
+if TARGET_CONGA_SX8X
+
+config SYS_BOARD
+	default "cgtsx8x"
+
+config SYS_VENDOR
+	default "congatec"
+
+config SYS_CONFIG_NAME
+	default "cgtsx8x"
+
+menu "congatec SX8X misc"
+
+config CGT_CM4_PART_DET
+	bool "Enable detection of CM4 partition state at board late init"
+	default y
+	help
+	 This option enables autodetection of the CM4 partition state
+	 at board late init. If enabled (default), the CM4 partition
+	 state (started, not started) is printed out (e.g. to serial
+	 terminal) on startup.
+
+config CGT_ENV_IS_IN_MMC_AUTOADAPT
+	bool "Enable automated mmcdev/mmcroot adaption (ENV_IS_IN_MMC)"
+	depends on ENV_IS_IN_MMC
+	default n
+	help
+	 This option enables autoadaption of the environment variables
+	 mmcdev and mmcroot with regard to the MMC device holding the
+	 environment.
+	 If environment is not stored at an MMC device, the
+	 environment variables mmcdev and mmcroot are NOT adapted.
+
+menu "SX8X ethernet interface selection"
+
+config CGT_ENABLE_FEC0
+	bool "Enable FEC0"
+	default y
+	depends on ARM && TARGET_CONGA_SX8X
+
+config CGT_ENABLE_FEC1
+	bool "Enable FEC1"
+	default y
+	depends on ARM && TARGET_CONGA_SX8X
+
+endmenu
+
+choice
+	prompt "SX8X Memory Configuration"
+        default CGT_SX8X_MEM_VAR_2GB
+
+config CGT_SX8X_MEM_VAR_1GB
+	bool "1GB"
+
+config CGT_SX8X_MEM_VAR_2GB
+	bool "2GB"
+
+config CGT_SX8X_MEM_VAR_4GB
+	bool "4GB"
+
+config CGT_SX8X_MEM_VAR_3GB_LEGACY
+	bool "3GB - will be removed soon!"
+
+endchoice
+
+endmenu
+
+source "board/freescale/common/Kconfig"
+
+endif
