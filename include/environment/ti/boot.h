@@ -47,6 +47,15 @@
 	"name=userdata,size=-,uuid=${uuid_gpt_userdata}"
 #endif /* PARTS_DEFAULT */
 
+#if defined(CONFIG_CMD_CAPE)
+#define CAPE_CONFIG \
+	"cape_overlay_addr=0x88080000\0" \
+	"overlay_dir=/lib/firmware\0" \
+	"cape_overlay_cmd=load ${devtype} ${capepart} ${cape_overlay_addr} ${overlay_dir}/${cape_overlay_name}"
+#else
+#define CAPE_CONFIG ""
+#endif
+
 #if defined(CONFIG_CMD_AVB)
 #define AVB_VERIFY_CHECK "if run avb_verify; then " \
 				"echo AVB verification OK.;" \
@@ -129,6 +138,7 @@
 #define DEFAULT_COMMON_BOOT_TI_ARGS \
 	"console=" CONSOLEDEV ",115200n8\0" \
 	"fdtfile=undefined\0" \
+	CAPE_CONFIG \
 	"bootpart=0:2\0" \
 	"bootdir=/boot\0" \
 	"bootfile=zImage\0" \
