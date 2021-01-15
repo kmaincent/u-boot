@@ -314,6 +314,13 @@ config CMD_FDT
 	help
 	  Do FDT related setup before booting into the Operating System.
 
+config CMD_CAPE
+	bool "Cape management commands"
+	default y
+	depends on CMD_FDT
+	help
+	  Manage cape setup before booting the Operating System.
+
 config CMD_GO
 	bool "go"
 	default y
