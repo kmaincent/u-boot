@@ -345,7 +345,7 @@ void emif_get_ext_phy_ctrl_const_regs(u32 emif_nr, const u32 **regs, u32 *size)
 	}
 }
 
-#ifdef CONFIG_CMD_CAPE
+#ifdef CONFIG_HAS_CAPE_SCAN
 
 struct am335x_cape_eeprom_id {
 	unsigned int header;
@@ -354,20 +354,11 @@ struct am335x_cape_eeprom_id {
 	char version[4];
 	char manufacture[16];
 	char part_number[16];
-	char number_of_pins[2];
-	char serial_number[12];
-	char pin_usage[140];
-	char vdd_3v3exp[ 2];
-	char vdd_5v[ 2];
-	char sys_5v[2];
-	char dc_supplied[2];
 };
 
 #define CAPE_EEPROM_BUS_NUM 3
-#define CAPE_EEPROM_ADDR0	0x54
-#define CAPE_EEPROM_ADDR1	0x55
-#define CAPE_EEPROM_ADDR2	0x56
-#define CAPE_EEPROM_ADDR3	0x57
+#define CAPE_EEPROM_FIRST_ADDR	0x54
+#define CAPE_EEPROM_LAST_ADDR	0x57
 
 #define CAPE_EEPROM_ADDR_LEN 0x10
 
@@ -387,20 +378,18 @@ int cape_board_scan(struct list_head *cape_list)
 	char cursor = (char) 0;
 	char *c = NULL;
 
-	for ( addr = CAPE_EEPROM_ADDR0; addr <= CAPE_EEPROM_ADDR3; addr++ ) {
+	for ( addr = CAPE_EEPROM_FIRST_ADDR; addr <= CAPE_EEPROM_LAST_ADDR; addr++ ) {
 		ret = i2c_get_chip_for_busnum(CAPE_EEPROM_BUS_NUM, addr, 1, &dev);
-		if (ret) {
-			debug("BeagleBone Cape EEPROM: no EEPROM at address: 0x%x\n", addr);
-		} else {
-			debug("BeagleBone Cape EEPROM: found EEPROM at address: 0x%x\n", addr);
+		if (!ret) {
 			// Move the read cursor to the beginning of the EEPROM
 			dm_i2c_write(dev, 0, (uchar *)&cursor, 1);
 			ret = dm_i2c_read(dev, 0, (uchar *)&eeprom_header, sizeof(struct am335x_cape_eeprom_id));
 			if (ret) {
-				printf("BeagleBone Cape EEPROM: Cannot read eeprom params\n");
+				printf("Cannot i2c EEPROM\n");
 			}
 
 			if (eeprom_header.header == 0xEE3355AA) {
+
 				/* Clean few fields */
 				for(c = eeprom_header.board_name; c < eeprom_header.board_name + 68 ; c ++)
 				{
@@ -410,8 +399,7 @@ int cape_board_scan(struct list_head *cape_list)
 				}
 
 				// Process cape part_number
-				strncpy(process_cape_part_number, "...............", 16);
-
+				memset(process_cape_part_number, 0, sizeof(process_cape_part_number));
 				strncpy(process_cape_part_number, eeprom_header.part_number, 16);
 				//FIXME: some capes end with '.'
 				if ( process_cape_part_number[15] == 0x2E ) {
@@ -443,8 +431,6 @@ int cape_board_scan(struct list_head *cape_list)
 				strncpy(cape->owner, eeprom_header.manufacture, 16);
 				list_add_tail(&cape->list, cape_list);
 				num_cape++;
-			} else {
-				printf("BeagleBone Cape EEPROM: EEPROM contents not valid (or blank) on address: 0x%x\n", addr);
 			}
 		}
 	}
