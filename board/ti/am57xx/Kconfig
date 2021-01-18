@@ -9,6 +9,10 @@ config SYS_VENDOR
 config SYS_CONFIG_NAME
 	default "am57xx_evm"
 
+config HAS_CAPE_SCAN
+	bool
+	default y
+
 source "board/ti/common/Kconfig"
 
 endif

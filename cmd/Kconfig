@@ -317,7 +317,7 @@ config CMD_FDT
 config CMD_CAPE
 	bool "Cape management commands"
 	default y
-	depends on CMD_FDT
+	depends on CMD_FDT && HAS_CAPE_SCAN
 	help
 	  Manage cape setup before booting the Operating System.
 
