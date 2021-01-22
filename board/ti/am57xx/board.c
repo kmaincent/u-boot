@@ -374,7 +374,6 @@ int cape_board_scan(struct list_head *cape_list)
 	struct udevice *dev;
 	unsigned char addr;
 
-	char cape_overlay[26];
 	char process_cape_part_number[17] = {'\0'};
 	char process_cape_version[5] = {'\0'};
 	char cursor = (char) 0;
@@ -421,14 +420,13 @@ int cape_board_scan(struct list_head *cape_list)
 					process_cape_version[i] = 0x30;
 			}
 
-			snprintf(cape_overlay, 26, "%s-%s.dtbo", process_cape_part_number, process_cape_version);
+			printf("BeagleBone Cape: %s (0x%x)\n", eeprom_header.board_name, addr);
 
-			printf("BeagleBone Cape EEPROM: 0x%x %s\n", addr, eeprom_header.board_name);
 			cape = calloc(1, sizeof(struct cape));
 			if (!cape)
 				return 0;
 
-			strncpy(cape->overlay, cape_overlay, 32);
+			snprintf(cape->overlay, sizeof(cape->overlay), "%s-%s.dtbo", process_cape_part_number, process_cape_version);
 			strncpy(cape->name, eeprom_header.board_name, 32);
 			strncpy(cape->version, process_cape_version, 4);
 			strncpy(cape->owner, eeprom_header.manufacture, 16);

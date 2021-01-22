@@ -41,7 +41,7 @@ static int do_cape_scan(struct cmd_tbl *cmdtp, int flag,
 		free(cape);
 	}
 	int cape_num = cape_board_scan(&cape_list);
-	printf("Found %d cape.\n", cape_num);
+	printf("Found %d extension board.\n", cape_num);
 
 	return CMD_RET_SUCCESS;
 }

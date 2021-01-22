@@ -79,7 +79,7 @@ int cape_board_scan(struct list_head *cape_list)
 		vid = dip_convert(w1_header.vendor_id);
 		pid = dip_convert(w1_header.product_id);
 
-		printf("DIP: Found %s (0x%x) from %s (0x%x) detected\n",
+		printf("DIP: %s (0x%x) from %s (0x%x)\n",
 		       w1_header.product_name, pid,
 		       w1_header.vendor_name, vid);
 
@@ -89,7 +89,6 @@ int cape_board_scan(struct list_head *cape_list)
 
 		snprintf(cape->overlay, sizeof(cape->overlay), "dip-%x-%x.dtbo",
 			 vid, pid);
-		printf("overlay %s\n", cape->overlay);
 		strncpy(cape->name, w1_header.product_name, 32);
 		strncpy(cape->owner, w1_header.vendor_name, 32);
 		list_add_tail(&cape->list, cape_list);
