@@ -345,7 +345,7 @@ void emif_get_ext_phy_ctrl_const_regs(u32 emif_nr, const u32 **regs, u32 *size)
 	}
 }
 
-#ifdef CONFIG_HAS_CAPE_SCAN
+#ifdef CONFIG_CMD_CAPE
 
 struct am335x_cape_eeprom_id {
 	unsigned int header;
@@ -361,6 +361,8 @@ struct am335x_cape_eeprom_id {
 #define CAPE_EEPROM_LAST_ADDR	0x57
 
 #define CAPE_EEPROM_ADDR_LEN 0x10
+
+#define CAPE_MAGIC 0xEE3355AA
 
 int cape_board_scan(struct list_head *cape_list)
 {
@@ -385,53 +387,53 @@ int cape_board_scan(struct list_head *cape_list)
 			dm_i2c_write(dev, 0, (uchar *)&cursor, 1);
 			ret = dm_i2c_read(dev, 0, (uchar *)&eeprom_header, sizeof(struct am335x_cape_eeprom_id));
 			if (ret) {
-				printf("Cannot i2c EEPROM\n");
+				printf("Cannot read i2c EEPROM\n");
 			}
 
-			if (eeprom_header.header == 0xEE3355AA) {
+			if (eeprom_header.header != CAPE_MAGIC)
+				continue;
 
-				/* Clean few fields */
-				for(c = eeprom_header.board_name; c < eeprom_header.board_name + 68 ; c ++)
-				{
-					if (( *c  == 0x00 ) || ( *c == 0xFF )) {
-						*c ='\0';
-					}
+			/* Clean few fields */
+			for(c = eeprom_header.board_name; c < eeprom_header.board_name + 68 ; c ++)
+			{
+				if (( *c  == 0x00 ) || ( *c == 0xFF )) {
+					*c ='\0';
 				}
-
-				// Process cape part_number
-				memset(process_cape_part_number, 0, sizeof(process_cape_part_number));
-				strncpy(process_cape_part_number, eeprom_header.part_number, 16);
-				//FIXME: some capes end with '.'
-				if ( process_cape_part_number[15] == 0x2E ) {
-					puts("debug: fixup, extra . in eeprom field\n");
-					process_cape_part_number[15] = 0x00;
-					if ( process_cape_part_number[14] == 0x2E ) {
-						process_cape_part_number[14] = 0x00;
-					}
-				}
-
-				// Process cape version
-				memset(process_cape_version, 0, sizeof(process_cape_version));
-				strncpy(process_cape_version, eeprom_header.version, 4);
-				for ( int i=0; i < 4; i++ ) {
-					if ( process_cape_version[i] == '\0' )
-						process_cape_version[i] = 0x30;
-				}
-
-				snprintf(cape_overlay, 26, "%s-%s.dtbo", process_cape_part_number, process_cape_version);
-
-				printf("BeagleBone Cape EEPROM: 0x%x %s\n", addr, eeprom_header.board_name);
-				cape = calloc(1, sizeof(struct cape));
-				if (!cape)
-					return 0;
-
-				strncpy(cape->overlay, cape_overlay, 32);
-				strncpy(cape->name, eeprom_header.board_name, 32);
-				strncpy(cape->version, process_cape_version, 4);
-				strncpy(cape->owner, eeprom_header.manufacture, 16);
-				list_add_tail(&cape->list, cape_list);
-				num_cape++;
 			}
+
+			// Process cape part_number
+			memset(process_cape_part_number, 0, sizeof(process_cape_part_number));
+			strncpy(process_cape_part_number, eeprom_header.part_number, 16);
+			//FIXME: some capes end with '.'
+			if ( process_cape_part_number[15] == 0x2E ) {
+				puts("debug: fixup, extra . in eeprom field\n");
+				process_cape_part_number[15] = 0x00;
+				if ( process_cape_part_number[14] == 0x2E ) {
+					process_cape_part_number[14] = 0x00;
+				}
+			}
+
+			// Process cape version
+			memset(process_cape_version, 0, sizeof(process_cape_version));
+			strncpy(process_cape_version, eeprom_header.version, 4);
+			for ( int i=0; i < 4; i++ ) {
+				if ( process_cape_version[i] == '\0' )
+					process_cape_version[i] = 0x30;
+			}
+
+			snprintf(cape_overlay, 26, "%s-%s.dtbo", process_cape_part_number, process_cape_version);
+
+			printf("BeagleBone Cape EEPROM: 0x%x %s\n", addr, eeprom_header.board_name);
+			cape = calloc(1, sizeof(struct cape));
+			if (!cape)
+				return 0;
+
+			strncpy(cape->overlay, cape_overlay, 32);
+			strncpy(cape->name, eeprom_header.board_name, 32);
+			strncpy(cape->version, process_cape_version, 4);
+			strncpy(cape->owner, eeprom_header.manufacture, 16);
+			list_add_tail(&cape->list, cape_list);
+			num_cape++;
 		}
 	}
 	return num_cape;

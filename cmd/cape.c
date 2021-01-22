@@ -35,7 +35,6 @@ static int do_cape_list(struct cmd_tbl *cmdtp, int flag,
 static int do_cape_scan(struct cmd_tbl *cmdtp, int flag,
 		       int argc, char *const argv[])
 {
-#ifdef CONFIG_HAS_CAPE_SCAN
 	struct cape *cape, *next;
 	list_for_each_entry_safe(cape, next, &cape_list, list) {
 		list_del(&cape->list);
@@ -44,18 +43,12 @@ static int do_cape_scan(struct cmd_tbl *cmdtp, int flag,
 	int cape_num = cape_board_scan(&cape_list);
 	printf("Found %d cape.\n", cape_num);
 
-#endif
 	return CMD_RET_SUCCESS;
 }
 
 static int do_cape_apply(struct cmd_tbl *cmdtp, int flag,
 		       int argc, char *const argv[])
 {
-#ifndef CONFIG_CMD_FDT
-	printf("fdt command no enable, can not apply cape overlay\n");
-	return CMD_RET_FAILURE;
-#else
-
 	if (argc < 2)
 		return CMD_RET_USAGE;
 
@@ -111,7 +104,6 @@ static int do_cape_apply(struct cmd_tbl *cmdtp, int flag,
 	}
 
 	return CMD_RET_SUCCESS;
-#endif /* CONFIG_CMD_FDT */
 }
 
 static struct cmd_tbl cmd_cape[] = {
