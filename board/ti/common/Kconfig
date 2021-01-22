@@ -16,6 +16,9 @@ config EEPROM_CHIP_ADDRESS
 	default 0x50
 	depends on TI_I2C_BOARD_DETECT
 
+config CAPE_EEPROM_BUS_NUM
+	int
+
 config TI_COMMON_CMD_OPTIONS
 	bool "Enable cmd options on TI platforms"
 	imply CMD_ASKENV
