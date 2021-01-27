@@ -6,10 +6,12 @@ choice
 
 config TARGET_CHIP
 	bool "CHIP board"
+	select SUPPORT_EXTENSION_SCAN
 	select W1
 	select W1_GPIO
 	select W1_EEPROM
 	select W1_EEPROM_DS24XXX
+	imply CMD_EXTENSION
 
 endchoice
 
