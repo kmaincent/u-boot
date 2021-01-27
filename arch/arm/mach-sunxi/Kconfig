@@ -1017,3 +1017,12 @@ config PINEPHONE_DT_SELECTION
 	  correct PinePhone hardware revision during boot.
 
 endif
+
+config CHIP_DIP_SCAN
+	bool "Enable DIPs detection for CHIP board"
+	select SUPPORT_EXTENSION_SCAN
+	select W1
+	select W1_GPIO
+	select W1_EEPROM
+	select W1_EEPROM_DS24XXX
+	imply CMD_EXTENSION
