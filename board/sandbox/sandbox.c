@@ -117,27 +117,27 @@ int ft_board_setup(void *fdt, struct bd_info *bd)
 }
 
 #ifdef CONFIG_CMD_EXTENSION
-int extension_board_scan(struct list_head *extension_list)
+static int sandbox_extension_board_scan(struct alist *extension_list)
 {
 	int i;
 
 	for (i = 0; i < 2; i++) {
-		struct extension *extension;
+		struct extension extension = {0}, *_extension;
 
-		extension = calloc(1, sizeof(struct extension));
-		if (!extension)
+		snprintf(extension.overlay, sizeof(extension.overlay), "overlay%d.dtbo", i);
+		snprintf(extension.name, sizeof(extension.name), "extension board %d", i);
+		snprintf(extension.owner, sizeof(extension.owner), "sandbox");
+		snprintf(extension.version, sizeof(extension.version), "1.1");
+		snprintf(extension.other, sizeof(extension.other), "Fictional extension board");
+		_extension = alist_add(extension_list, extension);
+		if (!_extension)
 			return -ENOMEM;
-
-		snprintf(extension->overlay, sizeof(extension->overlay), "overlay%d.dtbo", i);
-		snprintf(extension->name, sizeof(extension->name), "extension board %d", i);
-		snprintf(extension->owner, sizeof(extension->owner), "sandbox");
-		snprintf(extension->version, sizeof(extension->version), "1.1");
-		snprintf(extension->other, sizeof(extension->other), "Fictional extension board");
-		list_add_tail(&extension->list, extension_list);
 	}
 
 	return i;
 }
+
+U_BOOT_EXTENSION(sandbox_extension, sandbox_extension_board_scan);
 #endif
 
 #ifdef CONFIG_BOARD_LATE_INIT
