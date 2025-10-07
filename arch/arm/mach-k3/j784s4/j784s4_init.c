@@ -298,16 +298,6 @@ void board_init_f(ulong dummy)
 	k3_spl_init();
 	k3_mem_init();
 
-	if (IS_ENABLED(CONFIG_SPL_ETH) && IS_ENABLED(CONFIG_TI_AM65_CPSW_NUSS) &&
-	    spl_boot_device() == BOOT_DEVICE_ETHERNET) {
-		struct udevice *cpswdev;
-
-		ret = uclass_get_device_by_driver(UCLASS_MISC, DM_DRIVER_GET(am65_cpsw_nuss),
-						  &cpswdev);
-		if (ret)
-			printf("Failed to probe am65_cpsw_nuss driver..\n");
-	}
-
 	if (IS_ENABLED(CONFIG_CPU_V7R) && IS_ENABLED(CONFIG_K3_AVS0)) {
 		ret = uclass_get_device_by_driver(UCLASS_MISC, DM_DRIVER_GET(k3_avs),
 						  &dev);
