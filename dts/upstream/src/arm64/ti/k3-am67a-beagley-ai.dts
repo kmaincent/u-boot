@@ -473,19 +473,6 @@
 		system-power-controller;
 		ti,power-button;
 
-		connector {
-			compatible = "usb-c-connector";
-			label = "USB-C";
-			self-powered;
-			data-role = "dual";
-			power-role = "sink";
-			port {
-				usb_con_hs: endpoint {
-					remote-endpoint = <&usb0_hs_ep>;
-				};
-			};
-		};
-
 		regulators {
 			buck1_reg: buck1 {
 				regulator-name = "VDD_3V3";
