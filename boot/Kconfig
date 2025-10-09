@@ -1712,9 +1712,6 @@ endif # OF_LIBFDT
 config SUPPORT_EXTENSION_SCAN
         bool
 
-config SUPPORT_DM_EXTENSION_SCAN
-        bool
-
 config USE_BOOTARGS
 	bool "Enable boot arguments"
 	help
