@@ -34,6 +34,13 @@ installed via the command
 
    pip install -r requirements.txt
 
+Binman tools is also used for a few tests. Binman dependencies can be
+installed via the command
+
+.. code-block:: bash
+
+   pip install -r ../../tools/binman/requirements.txt
+
 In order to execute certain tests on their supported platforms other tools
 will be required. The following tools may be needed:
 
@@ -89,6 +96,7 @@ environment.  This can be done via the following commands:
     $ python3 -m venv venv
     $ . ./venv/bin/activate
     $ pip install -r test/py/requirements.txt
+    $ pip install -r tools/binman/requirements.txt
 
 Testing sandbox
 ---------------
