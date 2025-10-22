@@ -35,11 +35,11 @@ installed via the command
    pip install -r requirements.txt
 
 In order to execute certain tests on their supported platforms other tools
-will be required. The following is an incomplete list:
+will be required. The following tools may be needed:
 
 * gdisk
 * dfu-util
-* dtc
+* device-tree-compiler
 * openssl
 * e2fsprogs
 * util-linux
@@ -50,6 +50,11 @@ will be required. The following is an incomplete list:
 * mtools
 * sbsigntool
 * udisks2
+* swig
+* cgpt
+* libgnutls28-dev
+* vboot-kernel-utils
+* fdisk
 
 Please use the appropriate commands for your distribution to match these tools
 up with the package that provides them.
