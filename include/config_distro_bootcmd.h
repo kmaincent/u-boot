@@ -549,9 +549,13 @@
 			"if fstype ${devtype} "                           \
 					"${devnum}:${distro_bootpart} "   \
 					"bootfstype; then "               \
-				"part uuid ${devtype} "                   \
-					"${devnum}:${distro_bootpart} "   \
-					"distro_bootpart_uuid ; "         \
+				"if test -n ${find_distro_rootpart}; then " \
+					"run find_distro_rootpart; "      \
+				"else "                                   \
+					"part uuid ${devtype} "           \
+						"${devnum}:${distro_bootpart} " \
+						"distro_bootpart_uuid ; " \
+				"fi; "                                    \
 				"run scan_dev_for_boot; "                 \
 			"fi; "                                            \
 		"done; "                                                  \

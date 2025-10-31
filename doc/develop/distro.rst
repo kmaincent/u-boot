@@ -312,6 +312,17 @@ scriptaddr:
 
   A size of 1MB for extlinux.conf is more than adequate.
 
+find_distro_rootpart:
+  Optional. Sets the rootfs partition by applying distro boot enumeration logic,
+  allowing the boot partition environment variables (distro_bootpart, devtype,
+  devnum, etc.) to be reused for rootfs detection.
+
+  For example::
+
+    "find_distro_rootpart=" \
+        "setexpr distro_rootpart ${distro_bootpart} + 1 ;" \
+        "part uuid ${devtype} ${devnum}:${distro_rootpart} rootpart_uuid ;\0"
+
 For suggestions on memory locations for ARM systems, you must follow the
 guidelines specified in Documentation/arm/Booting in the Linux kernel tree.
 
