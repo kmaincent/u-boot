@@ -81,7 +81,9 @@
 #define CFG_EXTRA_ENV_SETTINGS \
 	DEFAULT_LINUX_BOOT_ENV \
 	"fdtfile=undefined\0" \
-	"finduuid=part uuid mmc 0:2 uuid\0" \
+	"find_distro_rootpart=" \
+		"setexpr distro_rootpart ${distro_bootpart} + 1 ;" \
+		"part uuid ${devtype} ${devnum}:${distro_rootpart} uuid ;\0" \
 	"console=ttyO0,115200n8\0" \
 	"partitions=" \
 		"uuid_disk=${uuid_gpt_disk};" \
