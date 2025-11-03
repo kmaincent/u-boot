@@ -17,63 +17,14 @@
 #define __CONFIG_AM335X_EVM_H
 
 #include <configs/ti_am335x_common.h>
+#include <env/ti/nand.h>
 #include <linux/sizes.h>
 
 /* Clock Defines */
 #define V_OSCK				24000000  /* Clock output from T2 */
 #define V_SCLK				(V_OSCK)
 
-#ifdef CONFIG_MTD_RAW_NAND
-#define NANDARGS \
-	"nandargs=setenv bootargs console=${console} " \
-		"${optargs} " \
-		"root=${nandroot} " \
-		"rootfstype=${nandrootfstype}\0" \
-	"nandroot=ubi0:rootfs rw ubi.mtd=NAND.file-system,2048\0" \
-	"nandrootfstype=ubifs rootwait\0" \
-	"nandboot=echo Booting from nand ...; " \
-		"run nandargs; " \
-		"nand read ${fdtaddr} NAND.u-boot-spl-os; " \
-		"nand read ${loadaddr} NAND.kernel; " \
-		"bootz ${loadaddr} - ${fdtaddr}\0"
-#else
-#define NANDARGS ""
-#endif
-
-#define BOOTENV_DEV_NAND(devtypeu, devtypel, instance) \
-	"bootcmd_" #devtypel "=" \
-	"run nandboot\0"
-
-#define BOOTENV_DEV_NAME_NAND(devtypeu, devtypel, instance) \
-	#devtypel #instance " "
-
-#if IS_ENABLED(CONFIG_CMD_USB)
-# define BOOT_TARGET_USB(func) func(USB, usb, 0)
-#else
-# define BOOT_TARGET_USB(func)
-#endif
-
-#if CONFIG_IS_ENABLED(CMD_PXE)
-# define BOOT_TARGET_PXE(func) func(PXE, pxe, na)
-#else
-# define BOOT_TARGET_PXE(func)
-#endif
-
-#if CONFIG_IS_ENABLED(CMD_DHCP)
-# define BOOT_TARGET_DHCP(func) func(DHCP, dhcp, na)
-#else
-# define BOOT_TARGET_DHCP(func)
-#endif
-
-#define BOOT_TARGET_DEVICES(func) \
-	func(MMC, mmc, 0) \
-	func(MMC, mmc, 1) \
-	func(NAND, nand, 0) \
-	BOOT_TARGET_USB(func) \
-	BOOT_TARGET_PXE(func) \
-	BOOT_TARGET_DHCP(func)
-
-#include <config_distro_bootcmd.h>
+#define BOOT_TARGETS	"mmc usb pxe dhcp"
 
 #ifndef CONFIG_XPL_BUILD
 #include <env/ti/dfu.h>
@@ -155,7 +106,7 @@
 	NANDARGS \
 	NETARGS \
 	DFUARGS \
-	BOOTENV
+	"boot_targets=" BOOT_TARGETS "\0"
 #endif
 
 /* NS16550 Configuration */
