@@ -17,97 +17,11 @@
 #define __CONFIG_AM335X_EVM_H
 
 #include <configs/ti_am335x_common.h>
-#include <env/ti/nand.h>
 #include <linux/sizes.h>
 
 /* Clock Defines */
 #define V_OSCK				24000000  /* Clock output from T2 */
 #define V_SCLK				(V_OSCK)
-
-#define BOOT_TARGETS	"mmc usb pxe dhcp"
-
-#ifndef CONFIG_XPL_BUILD
-#include <env/ti/dfu.h>
-
-#define CFG_EXTRA_ENV_SETTINGS \
-	DEFAULT_LINUX_BOOT_ENV \
-	"fdtfile=undefined\0" \
-	"finduuid=part uuid mmc 0:2 uuid\0" \
-	"console=ttyO0,115200n8\0" \
-	"partitions=" \
-		"uuid_disk=${uuid_gpt_disk};" \
-		"name=bootloader,start=384K,size=1792K," \
-			"uuid=${uuid_gpt_bootloader};" \
-		"name=rootfs,start=2688K,size=-,uuid=${uuid_gpt_rootfs}\0" \
-	"optargs=\0" \
-	"ramroot=/dev/ram0 rw\0" \
-	"ramrootfstype=ext2\0" \
-	"spiroot=/dev/mtdblock4 rw\0" \
-	"spirootfstype=jffs2\0" \
-	"spisrcaddr=0xe0000\0" \
-	"spiimgsize=0x362000\0" \
-	"spibusno=0\0" \
-	"spiargs=setenv bootargs console=${console} " \
-		"${optargs} " \
-		"root=${spiroot} " \
-		"rootfstype=${spirootfstype}\0" \
-	"ramargs=setenv bootargs console=${console} " \
-		"${optargs} " \
-		"root=${ramroot} " \
-		"rootfstype=${ramrootfstype}\0" \
-	"loadramdisk=load mmc ${mmcdev} ${rdaddr} ramdisk.gz\0" \
-	"spiboot=echo Booting from spi ...; " \
-		"run spiargs; " \
-		"sf probe ${spibusno}:0; " \
-		"sf read ${loadaddr} ${spisrcaddr} ${spiimgsize}; " \
-		"bootz ${loadaddr}\0" \
-	"ramboot=echo Booting from ramdisk ...; " \
-		"run ramargs; " \
-		"bootz ${loadaddr} ${rdaddr} ${fdtaddr}\0" \
-	"findfdt="\
-		"if test $board_name = A335BONE; then " \
-			"setenv fdtfile am335x-bone.dtb; fi; " \
-		"if test $board_name = A335BNLT; then " \
-			"setenv fdtfile am335x-boneblack.dtb; fi; " \
-		"if test $board_name = A335PBGL; then " \
-			"setenv fdtfile am335x-pocketbeagle.dtb; fi; " \
-		"if test $board_name = BBBW; then " \
-			"setenv fdtfile am335x-boneblack-wireless.dtb; fi; " \
-		"if test $board_name = BBG1; then " \
-			"setenv fdtfile am335x-bonegreen.dtb; fi; " \
-		"if test $board_name = BBGW; then " \
-			"setenv fdtfile am335x-bonegreen-wireless.dtb; fi; " \
-		"if test $board_name = BBGE; then " \
-			"setenv fdtfile am335x-bonegreen-eco.dtb; fi; " \
-		"if test $board_name = BBBL; then " \
-			"setenv fdtfile am335x-boneblue.dtb; fi; " \
-		"if test $board_name = BBEN; then " \
-			"setenv fdtfile am335x-sancloud-bbe.dtb; fi; " \
-		"if test $board_name = BBELITE; then " \
-			"setenv fdtfile am335x-sancloud-bbe-lite.dtb; fi; " \
-		"if test $board_name = BBE_EX_WIFI; then " \
-			"setenv fdtfile am335x-sancloud-bbe-extended-wifi.dtb; fi; " \
-		"if test $board_name = A33515BB; then " \
-			"setenv fdtfile am335x-evm.dtb; fi; " \
-		"if test $board_name = A335X_SK; then " \
-			"setenv fdtfile am335x-evmsk.dtb; fi; " \
-		"if test $board_name = A335_ICE && test $ice_mii = rmii; then " \
-			"setenv fdtfile am335x-icev2.dtb; fi; " \
-		"if test $board_name = A335_ICE && test $ice_mii = mii; then " \
-			"setenv fdtfile am335x-icev2-prueth.dtb; fi; " \
-		"if test $fdtfile = undefined; then " \
-			"echo WARNING: Could not determine device tree to use; fi; \0" \
-	"init_console=" \
-		"if test $board_name = A335_ICE; then "\
-			"setenv console ttyO3,115200n8;" \
-		"else " \
-			"setenv console ttyO0,115200n8;" \
-		"fi;\0" \
-	NANDARGS \
-	NETARGS \
-	DFUARGS \
-	"boot_targets=" BOOT_TARGETS "\0"
-#endif
 
 /* NS16550 Configuration */
 #define CFG_SYS_NS16550_COM1		0x44e09000	/* Base EVM has UART0 */
@@ -131,15 +45,6 @@
 #define CFG_SYS_NAND_ECCSIZE		512
 #define CFG_SYS_NAND_ECCBYTES	14
 #endif /* !CONFIG_MTD_RAW_NAND */
-
-/* USB Device Firmware Update support */
-#ifndef CONFIG_XPL_BUILD
-#define DFUARGS \
-	DFU_ALT_INFO_EMMC \
-	DFU_ALT_INFO_MMC \
-	DFU_ALT_INFO_RAM \
-	DFU_ALT_INFO_NAND
-#endif
 
 /*
  * NOR Size = 16 MiB
