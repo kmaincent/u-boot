@@ -261,6 +261,9 @@ fdt_addr_r
 fdtoverlay_addr_r (needed if overlays are used)
     Address at which to load the overlay for the FDT, e.g. 0x02000000
 
+extension_overlay_addr (needed if extension is used)
+    Address at which to load the extension FDT overlays, e.g. 0x02000000
+
 kernel_addr_r
     Address at which to load the kernel, e.g. 0x02080000
 
